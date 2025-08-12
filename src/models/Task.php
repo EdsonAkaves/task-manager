@@ -23,7 +23,7 @@ class Task {
     }
 
     public function createTask($title, $description) {
-        $stmt = $this->pdo->prepare("INSER INTO tasks (title, description, status, created_at)
+        $stmt = $this->pdo->prepare("INSERT INTO tasks (title, description, status, created_at)
          VALUES (:title, :description, 'pending', NOW())");
 
         return $stmt->execute([
@@ -47,7 +47,7 @@ class Task {
 
     public function deleteTask($id) {
         $stmt = $this->pdo->prepare("DELETE FROM tasks WHERE id = :id");
-        
+
         return $stmt->execute(['id' => $id]);
     }
     
