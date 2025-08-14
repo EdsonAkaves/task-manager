@@ -19,30 +19,40 @@ class TaskController {
 
     public function createTask($title, $description) {
         if (empty($title)) {
-            return ['success' => false, 'message' => 'Title is required'];
+            return ['success' => false, 'message' => 'Título obrigatório'];
         }
 
         $created = $this->taskModel->createTask($title, $description);
 
         if ($created) {
-            return ['success' => true, 'message' => 'Task created succesfully'];
+            return ['success' => true, 'message' => 'Tarefa criada com sucesso'];
         } else {
-            return ['success' => false, 'message' => 'Failed to update task'];
+            return ['success' => false, 'message' => 'Falha ao criar tarefa'];
         }
+    }
+
+    public function editTaskForm($id) {
+        $task = $this->taskModel->getTaskById($id);
+
+        if(!$task) {
+            die("Tarefa não encontrada");
+        }
+
+        require_once __DIR__ . "/../views/task_edit.php";
     }
 
 
     public function updateTask($id, $title, $description, $status) {
         if (empty($title)) {
-            return ['success' => false, 'message' => 'Title is required'];
+            return ['success' => false, 'message' => 'Título obrigatório'];
         }
 
         $updated = $this->taskModel->updateTask($id, $title, $description, $status);
 
         if ($updated) {
-            return ['success' => true, 'message' => 'Task updated successfuly'];
+            return ['success' => true, 'message' => 'Tarefa atualizada com sucesso'];
         } else {
-            return ['success' => false, 'message' => 'Failed to update task'];
+            return ['success' => false, 'message' => 'Falha ao atualizar tarefa'];
         }
     }
 
@@ -50,9 +60,9 @@ class TaskController {
         $deleted = $this->taskModel->deleteTask($id);
 
         if ($deleted) {
-            return ['success' => true, 'message' => 'Task deleted successfully'];
+            return ['success' => true, 'message' => 'Tarefa apagada com sucesso'];
         } else {
-            return ['success' => false, 'message' => 'Failed to delete task'];
+            return ['success' => false, 'message' => 'Falha ao apagar tarefa'];
         }
     }
 
@@ -65,6 +75,16 @@ class TaskController {
         header("Location: /projetos/task-manager/public/index.php");
         exit;
     }
+
+    public function translateStatus($status) {
+        $translations = [
+            'pending' => 'Pendente',
+            'completed' => 'Concluída' 
+        ];
+        return $translations[$status] ?? $status;
+    }
+
+
 }
 
 ?>
